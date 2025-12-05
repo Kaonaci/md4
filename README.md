@@ -1,3 +1,5 @@
+# MD4
+MD4 implementation in Python and C.
 ## Purpose
 Demonstrate how the md4 hash function works and provide a sample md4 hash code.
 ## Installation
