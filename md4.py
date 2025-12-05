@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
 def md4(message: str|int|float) -> str:
-    # Превращаем строку с массив байтов
+    # Превращаем message в строку
     if not isinstance(message, str):
         message = str(message)
+    # Превращаем строку с массив байтов
     message_bytes = message.encode("utf-8")
 
     length = len(message) # Длина изначального сообщения в байтах
@@ -12,7 +13,7 @@ def md4(message: str|int|float) -> str:
     data = bytearray(length + 64 - (length % 64)) # Формируем буфер нужного размера
     data[:length] = message_bytes # Записываем в него байты строки
     data[length] = 0x80 # 1000 0000 в Little-endian - единичный бит и нули после него
-    data[-8:] = (length*8).to_bytes(8, byteorder="little") # Последние 8 байт (64 бит) на длину строки
+    data[-8:] = (length*8).to_bytes(8, byteorder="little") # Последние 8 байт - длинa строки
 
     # Регистры ABCD (записаны в Little-endian)
     A = 0x67452301 # 01 23 45 67
@@ -87,7 +88,7 @@ def md4(message: str|int|float) -> str:
         C = (C + CC) & MASK
         D = (D + DD) & MASK
 
-    # Формирование хэша
+    # Формирование хэша (хэш сформирован как ABCD в little-endian)
     hashed_message = b"".join([
         A.to_bytes(4, byteorder="little"),
         B.to_bytes(4, byteorder="little"),
@@ -112,3 +113,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     for message in args.message:
         print(md4(message))
+# 
